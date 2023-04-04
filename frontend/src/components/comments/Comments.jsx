@@ -2,8 +2,9 @@ import { useContext, useState } from "react";
 import "./Comments.scss";
 import { AuthContext } from "../../context/authContext";
 import axios from "axios";
+import Comment from "../comment/Comment";
 
-function Comments({ comment, postId }) {
+function Comments({ comments, postId }) {
     const { currentUser } = useContext(AuthContext);
     const [addcomment, setAddcomment] = useState({
         text: "",
@@ -15,7 +16,7 @@ function Comments({ comment, postId }) {
     };
 
     const handleCommentSubmit = async (e) => {
-        //send it to a server
+        //* send it to a server
         e.preventDefault();
 
         try {
@@ -23,14 +24,14 @@ function Comments({ comment, postId }) {
                 "http://localhost:8800/api/posts/" + postId + "/comment",
                 addcomment
             );
-            comment.push(addcomment);
+            comments.push(addcomment);
         } catch (err) {
             console.log(err.response.data.message);
         }
 
-        // clear the input field
+        //* clear the input field
         setAddcomment((prev) => ({ ...prev, text: "" }));
-        console.log(comment);
+        console.log(comments);
     };
 
     return (
@@ -59,31 +60,8 @@ function Comments({ comment, postId }) {
                 />
                 <button onClick={handleCommentSubmit}>Send</button>
             </div>
-            {comment.map((comment) => (
-                <div className="comment" key={comment._id}>
-                    {comment.profilePicture ? (
-                        <img
-                            src={
-                                process.env.REACT_APP_Image_Path +
-                                comment.profilePicture
-                            }
-                            alt=""
-                        />
-                    ) : (
-                        <img
-                            src={
-                                process.env.REACT_APP_Image_Path +
-                                "No_Image.jpg"
-                            }
-                            alt=""
-                        />
-                    )}
-                    <div className="info">
-                        <span>{comment.username}</span>
-                        <p>{comment.text}</p>
-                    </div>
-                    <span className="date"></span>
-                </div>
+            {comments.map((comment) => (
+                <Comment key={comment._id} comment={comment} />
             ))}
         </div>
     );

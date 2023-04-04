@@ -1,0 +1,37 @@
+@import "../../style.scss";
+
+.comment {
+    @include themify($themes) {
+        margin: 30px 0;
+        display: flex;
+        justify-content: space-between;
+
+        gap: 20px;
+
+        .info {
+            flex: 5;
+            display: flex;
+            gap: 3px;
+            align-items: flex-start;
+
+            .data {
+                flex-direction: column;
+                justify-content: space-between;
+                span {
+                    font-weight: 500;
+                }
+
+                p {
+                    color: themed("textColorSoft");
+                }
+            }
+        }
+
+        .date {
+            flex: 1;
+            align-self: center;
+            color: grey;
+            font-size: 12px;
+        }
+    }
+}
