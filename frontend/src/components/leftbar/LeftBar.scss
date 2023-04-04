@@ -1,0 +1,43 @@
+@import "../../style.scss";
+
+.leftbar{
+    @include themify($themes){
+        flex: 2;
+        
+        // Making the leftbar sticky
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 70px);
+        background-color: themed("bg");
+        color: themed("textColor");
+
+        //Scrool it list exceeds the limit of page
+        overflow: scroll;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+
+        @include mobile{
+            display: none;
+        }
+
+        .container{
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            .menu{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                img{
+                    width: 30px;
+                }
+                span{
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
