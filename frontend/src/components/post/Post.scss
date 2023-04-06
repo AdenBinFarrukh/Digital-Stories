@@ -1,82 +1,84 @@
 @import "../../style.scss";
 
 .post {
-  @include themify($themes) {
-    -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
-    box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+    @include themify($themes) {
+        -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
 
-    border-radius: 20px;
-    background-color: themed("bg");
-    color: themed("textColor");
+        width: 100%;
 
-    .container {
-      padding: 20px;
+        border-radius: 20px;
+        background-color: themed("bg");
+        color: themed("textColor");
 
-      .user {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
+        .container {
+            padding: 20px;
 
-        .userInfo {
-          display: flex;
-          gap: 20px;
+            .user {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
 
-          img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-          }
+                .userInfo {
+                    display: flex;
+                    gap: 20px;
 
-          .details {
-            display: flex;
-            flex-direction: column;
+                    img {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
 
-            .name {
-              font-weight: 500;
+                    .details {
+                        display: flex;
+                        flex-direction: column;
+
+                        .name {
+                            font-weight: 500;
+                        }
+                        .date {
+                            font-size: 12px;
+                        }
+                    }
+                }
+
+                button {
+                    position: absolute;
+                    top: 30px;
+                    right: 0;
+                    border: none;
+                    background-color: #ff0000;
+                }
             }
-            .date {
-              font-size: 12px;
+
+            .content {
+                margin: 20px 0px;
+
+                img {
+                    width: 100%;
+                    max-height: 500px;
+                    object-fit: contain;
+                    object-position: center;
+                    margin-top: 20px;
+                }
             }
-          }
+
+            .info {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+
+                .items {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    cursor: pointer;
+                    font-size: 14px;
+                }
+            }
         }
-
-        button {
-          position: absolute;
-          top: 30px;
-          right: 0;
-          border: none;
-          background-color: #ff0000;
-        }
-      }
-
-      .content {
-        margin: 20px 0px;
-
-        img {
-          width: 100%;
-          max-height: 500px;
-          object-fit: contain;
-          object-position: center;
-          margin-top: 20px;
-        }
-      }
-
-      .info {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-
-        .items {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          cursor: pointer;
-          font-size: 14px;
-        }
-      }
     }
-  }
 }
