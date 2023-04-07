@@ -1,11 +1,18 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Comments.scss";
 import { AuthContext } from "../../context/authContext";
+import { ChangeContext } from "../../context/changeContext";
 import axios from "axios";
 import Comment from "../comment/Comment";
+import ReactLoading from "react-loading";
 
-function Comments({ comments, postId }) {
+function Comments({ postId }) {
+    const { commentChange, setCommentChange } = useContext(ChangeContext);
     const { currentUser } = useContext(AuthContext);
+    const [comments, setComments] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    //* Adding Comments
     const [addcomment, setAddcomment] = useState({
         text: "",
         author: currentUser._id,
@@ -15,6 +22,7 @@ function Comments({ comments, postId }) {
         setAddcomment((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
+    //* Add comment to the List
     const handleCommentSubmit = async (e) => {
         //* send it to a server
         e.preventDefault();
@@ -24,7 +32,7 @@ function Comments({ comments, postId }) {
                 "http://localhost:8800/api/posts/" + postId + "/comment",
                 addcomment
             );
-            comments.push(addcomment);
+            setCommentChange(!commentChange);
         } catch (err) {
             console.log(err.response.data.message);
         }
@@ -33,6 +41,18 @@ function Comments({ comments, postId }) {
         setAddcomment((prev) => ({ ...prev, text: "" }));
         console.log(comments);
     };
+
+    //* Get comments when needed
+    useEffect(() => {
+        const fetchComments = async () => {
+            const res = await axios.get(
+                "http://localhost:8800/api/posts/" + postId + "/getcomments"
+            );
+            setIsLoading(false);
+            setComments(res.data.comments);
+        };
+        fetchComments();
+    }, [commentChange, postId]);
 
     return (
         <div className="comments">
@@ -60,9 +80,22 @@ function Comments({ comments, postId }) {
                 />
                 <button onClick={handleCommentSubmit}>Send</button>
             </div>
-            {comments.map((comment) => (
-                <Comment key={comment._id} comment={comment} />
-            ))}
+            {isLoading ? (
+                <ReactLoading
+                    type={"balls"}
+                    color={"#7d7d7d"}
+                    height={40}
+                    width={40}
+                />
+            ) : (
+                comments.map((comment) => (
+                    <Comment
+                        key={comment._id}
+                        postId={postId}
+                        comment={comment}
+                    />
+                ))
+            )}
         </div>
     );
 }

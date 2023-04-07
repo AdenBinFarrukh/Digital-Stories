@@ -1,10 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactLoading from "react-loading";
+import { ChangeContext } from "../../context/changeContext";
 import "./Comment.scss";
 
-function Comment({ comment }) {
+function Comment({ comment, postId }) {
     const [user, setUser] = useState({});
+    const { commentChange, setCommentChange } = useContext(ChangeContext);
     const [isLoading, setIsLoading] = useState(true);
 
     //* Get User Info
@@ -18,6 +20,17 @@ function Comment({ comment }) {
         };
         getUser();
     }, [comment.author]);
+
+    //! delete comment
+    const deleteComment = async () => {
+        await axios.delete(
+            "http://localhost:8800/api/posts/" +
+                postId +
+                "/comments/" +
+                comment._id
+        );
+        setCommentChange(!commentChange);
+    };
 
     return (
         <div className="comment">
@@ -53,7 +66,9 @@ function Comment({ comment }) {
                             <p>{comment.text}</p>
                         </div>
                     </div>
-                    <span className="date"></span>
+                    <span className="delete" onClick={deleteComment}>
+                        Delete
+                    </span>
                 </>
             )}
         </div>

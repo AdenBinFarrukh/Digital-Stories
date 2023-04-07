@@ -5,6 +5,7 @@ import LeftBar from "./components/leftbar/LeftBar";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
+import Leaderboard from "./pages/leaderboard/Leaderboard";
 import "./style.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
@@ -62,6 +63,7 @@ function App() {
                             </ProtectedRoute>
                         }>
                         <Route path="/" element={<Home />} />
+                        <Route path="/leaderboard" element={<Leaderboard />} />
                         <Route path="/profile/:id" element={<Profile />} />
                     </Route>
                 </Routes>
