@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
+const moment = require("moment");
 
 //* create a post
 
@@ -38,7 +39,15 @@ router.delete("/:id/:userId", async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
 
-        if (post.userId === req.params.userId) {
+        console.log(
+            "🚀 ~ file: posts.js:43 ~ router.delete ~ post.userId:",
+            post.userId
+        );
+        console.log(
+            "🚀 ~ file: posts.js:44 ~ router.delete ~ req.params.userId:",
+            req.params.userId
+        );
+        if (post.userId == req.params.userId) {
             await post.deleteOne();
             res.status(200).json("the post has been deleted");
         } else {
@@ -158,6 +167,53 @@ router.delete("/:postId/comments/:commentId", async (req, res) => {
         res.status(200).json({ message: "Comment deleted successfully" });
     } catch (err) {
         res.status(500).json(err);
+    }
+});
+
+//* Route to get the most liked and commented posts in the last 3 days
+router.get("/List/Trending", async (req, res) => {
+    const threeDaysAgo = moment().subtract(3, "days").toDate();
+
+    try {
+        const posts = await Post.aggregate([
+            { $match: { createdAt: { $gte: threeDaysAgo } } },
+            { $addFields: { numLikes: { $size: "$likes" } } },
+            { $addFields: { numComments: { $size: "$comments" } } },
+            { $sort: { numLikes: -1, numComments: -1 } },
+            { $limit: 10 },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userId",
+                    foreignField: "_id",
+                    as: "user",
+                },
+            },
+            { $unwind: "$user" },
+            {
+                $project: {
+                    _id: 1,
+                    userId: 1,
+                    desc: 1,
+                    image: 1,
+                    video: 1,
+                    likes: 1,
+                    is_public: 1,
+                    points: 1,
+                    comments: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    numLikes: 1,
+                    numComments: 1,
+                    "user.username": 1,
+                },
+            },
+        ]);
+
+        res.json(posts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Internal server error" });
     }
 });
 
