@@ -1,0 +1,16 @@
+@import "../../style.scss";
+
+.trending {
+    @include themify($themes) {
+        flex: 6;
+        background-color: themed("bgSoft");
+        padding: 20px 70px;
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+        }
+    }
+}

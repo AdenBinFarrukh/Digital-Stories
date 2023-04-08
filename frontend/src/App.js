@@ -20,6 +20,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import Trending from "./pages/trending/Trending";
 
 function App() {
     const { currentUser } = useContext(AuthContext);
@@ -63,6 +64,7 @@ function App() {
                             </ProtectedRoute>
                         }>
                         <Route path="/" element={<Home />} />
+                        <Route path="/trending" element={<Trending />} />
                         <Route path="/leaderboard" element={<Leaderboard />} />
                         <Route path="/profile/:id" element={<Profile />} />
                     </Route>

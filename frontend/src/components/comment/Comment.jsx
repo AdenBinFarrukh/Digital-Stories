@@ -2,12 +2,14 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { ChangeContext } from "../../context/changeContext";
+import { AuthContext } from "../../context/authContext";
 import "./Comment.scss";
 
 function Comment({ comment, postId }) {
     const [user, setUser] = useState({});
     const { commentChange, setCommentChange } = useContext(ChangeContext);
     const [isLoading, setIsLoading] = useState(true);
+    const { currentUser } = useContext(AuthContext);
 
     //* Get User Info
     useEffect(() => {
@@ -66,9 +68,11 @@ function Comment({ comment, postId }) {
                             <p>{comment.text}</p>
                         </div>
                     </div>
-                    <span className="delete" onClick={deleteComment}>
-                        Delete
-                    </span>
+                    {user._id === currentUser._id && (
+                        <span className="delete" onClick={deleteComment}>
+                            Delete
+                        </span>
+                    )}
                 </>
             )}
         </div>

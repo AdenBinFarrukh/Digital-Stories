@@ -23,11 +23,15 @@ function LeftBar() {
                     </div>
                 </Link>
 
-                <div className="menu">
-                    {/* https://icons8.com/icon/IDcKFlDBwbdx/friends */}
-                    <img src={trending} alt="" />
-                    <span>Trending</span>
-                </div>
+                <Link
+                    to={`/trending`}
+                    style={{ textDecoration: "none", color: "inherit" }}>
+                    <div className="menu">
+                        {/* https://icons8.com/icon/IDcKFlDBwbdx/friends */}
+                        <img src={trending} alt="" />
+                        <span>Trending</span>
+                    </div>
+                </Link>
 
                 <div className="menu">
                     {/* https://icons8.com/icon/IDcKFlDBwbdx/friends */}
