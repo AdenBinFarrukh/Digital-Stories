@@ -10,6 +10,7 @@ import Comments from "../comments/Comments";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { AuthContext } from "../../context/authContext";
+import { ChangeContext } from "../../context/changeContext";
 import axios from "axios";
 
 function Post({ post, setDeleted }) {
@@ -17,6 +18,7 @@ function Post({ post, setDeleted }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const [author, setAuthor] = useState({});
     const { currentUser } = useContext(AuthContext);
+    const { postChange, setPostChange } = useContext(ChangeContext);
 
     const [liked, setliked] = useState(post.likes.includes(currentUser._id));
 
@@ -59,6 +61,20 @@ function Post({ post, setDeleted }) {
                 currentUser._id
         );
         setDeleted(true);
+    };
+
+    //* Make private or public
+    const handlePublic = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put(`http://localhost:8800/api/posts/${post._id}`, {
+                userId: currentUser._id,
+                is_public: !post.is_public, // add the is_public field to the request body
+            });
+            setPostChange(!postChange);
+        } catch (err) {
+            console.log("🚀 ~ file: Post.jsx:76 ~ handleSubmit ~ err:", err);
+        }
     };
 
     //* Calculate how long ago the post was last Created AT
@@ -128,7 +144,16 @@ function Post({ post, setDeleted }) {
                             }
                         }}
                     />
-                    {menuOpen && <button onClick={handleDelete}>Delete</button>}
+                    {menuOpen && (
+                        <div className="menu">
+                            <button onClick={handleDelete}>Delete</button>
+                            <button onClick={handlePublic}>
+                                {post.is_public
+                                    ? "Make Private"
+                                    : "Make Public"}
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="content">

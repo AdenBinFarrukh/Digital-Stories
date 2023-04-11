@@ -45,12 +45,22 @@
                     }
                 }
 
-                button {
+                .menu {
                     position: absolute;
                     top: 30px;
                     right: 0;
                     border: none;
-                    background-color: #ff0000;
+                    background: transparent;
+
+                    gap: 10px;
+
+                    display: flex;
+                    flex-direction: column;
+
+                    button {
+                        background-color: themed("bgSoft");
+                        color: themed("textColorSoft");
+                    }
                 }
             }
 

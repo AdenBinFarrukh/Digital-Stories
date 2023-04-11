@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
-        if (post.userId === req.body.userId) {
+        if (post.userId == req.body.userId) {
             await post.updateOne({ $set: req.body });
             res.status(200).json("the post has been updated");
         } else {
@@ -38,15 +38,6 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id/:userId", async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
-
-        console.log(
-            "🚀 ~ file: posts.js:43 ~ router.delete ~ post.userId:",
-            post.userId
-        );
-        console.log(
-            "🚀 ~ file: posts.js:44 ~ router.delete ~ req.params.userId:",
-            req.params.userId
-        );
         if (post.userId == req.params.userId) {
             await post.deleteOne();
             res.status(200).json("the post has been deleted");
@@ -97,13 +88,17 @@ router.get("/:id", async (req, res) => {
 router.get("/timeline/:userId", async (req, res) => {
     try {
         const currentUser = await User.findById(req.params.userId);
-        const userPosts = await Post.find({ userId: currentUser._id }).sort({
-            createdAt: -1,
-        });
+        const userPosts = await Post.find({
+            userId: currentUser._id,
+            is_public: true, // add condition for public posts
+        }).sort({ createdAt: -1 });
 
         const friendPosts = await Promise.all(
             currentUser.followings.map((friendId) => {
-                return Post.find({ userId: friendId }).sort({ createdAt: -1 });
+                return Post.find({
+                    userId: friendId,
+                    is_public: true, // add condition for public posts
+                }).sort({ createdAt: -1 });
             })
         );
 
@@ -112,6 +107,20 @@ router.get("/timeline/:userId", async (req, res) => {
         );
         const flattenedFriendPosts = filteredFriendPosts.flat();
         res.status(200).json(flattenedFriendPosts.concat(userPosts));
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+//* get Profile posts
+
+router.get("/profile/:userId", async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.params.userId);
+        const userPosts = await Post.find({ userId: currentUser._id }).sort({
+            createdAt: -1,
+        });
+        res.status(200).json(userPosts);
     } catch (err) {
         res.status(500).json(err);
     }
@@ -217,7 +226,7 @@ router.get("/List/Trending", async (req, res) => {
     }
 });
 
-// Get engagements
+//* Get engagements
 router.get("/engagements/:userId", async (req, res) => {
     try {
         const userId = req.params.userId;
