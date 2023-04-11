@@ -6,6 +6,7 @@ import Navbar from "./components/navbar/Navbar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import Leaderboard from "./pages/leaderboard/Leaderboard";
+import Engagements from "./pages/engagements/Engagements";
 import "./style.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
@@ -66,6 +67,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/trending" element={<Trending />} />
                         <Route path="/leaderboard" element={<Leaderboard />} />
+                        <Route path="/engagements" element={<Engagements />} />
                         <Route path="/profile/:id" element={<Profile />} />
                     </Route>
                 </Routes>

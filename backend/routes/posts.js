@@ -172,7 +172,7 @@ router.delete("/:postId/comments/:commentId", async (req, res) => {
 
 //* Route to get the most liked and commented posts in the last 3 days
 router.get("/List/Trending", async (req, res) => {
-    const threeDaysAgo = moment().subtract(3, "days").toDate();
+    const threeDaysAgo = moment().subtract(7, "days").toDate();
 
     try {
         const posts = await Post.aggregate([
@@ -214,6 +214,45 @@ router.get("/List/Trending", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+// Get engagements
+router.get("/engagements/:userId", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const posts = await Post.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { likes: { $in: [userId] } },
+                        { "comments.author": userId },
+                    ],
+                },
+            },
+            {
+                $sort: {
+                    createdAt: -1,
+                },
+            },
+            {
+                $project: {
+                    userId: 1,
+                    desc: 1,
+                    image: 1,
+                    video: 1,
+                    likes: 1,
+                    is_public: 1,
+                    points: 1,
+                    comments: 1,
+                    createdAt: 1,
+                },
+            },
+        ]);
+        res.status(200).json(posts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server Error" });
     }
 });
 

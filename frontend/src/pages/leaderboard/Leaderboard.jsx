@@ -34,7 +34,7 @@ const Leaderboard = () => {
                 Leaders.map((leader) => (
                     <div className="leader" key={leader.username}>
                         <Link
-                            to={`/profile/641d79420b351951ccf0e2eb`}
+                            to={`/profile/` + leader.userId}
                             style={{
                                 textDecoration: "none",
                                 color: "inherit",
@@ -67,13 +67,6 @@ const Leaderboard = () => {
                     </div>
                 ))
             )}
-            {/* {(<img
-                    src={
-                        process.env.REACT_APP_Image_Path + leader.profilePicture
-                    }
-                    alt=""
-                />
-                <span>{leader.username}</span>)} */}
         </div>
     );
 };
