@@ -92,8 +92,8 @@ router.get("/:id/friends", async (req, res) => {
         const online = await Promise.all(
             connections.map(async (conn) => {
                 const temp = await User.findById(conn);
-                const { username, profilePicture, logged_in } = temp._doc;
-                return { username, profilePicture, logged_in };
+                const { username, profilePicture, logged_in, _id } = temp._doc;
+                return { username, profilePicture, logged_in, _id };
             })
         );
         res.status(200).json(online);

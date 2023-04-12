@@ -36,14 +36,14 @@ const Profile = () => {
         const fetchPosts = async () => {
             setLoading(true);
             const res = await axios.get(
-                "http://localhost:8800/api/posts/profile/" + currentUser._id
+                "http://localhost:8800/api/posts/profile/" + ID
             );
             setPosts(res.data);
             setLoading(false);
             setDeleted(false);
         };
         fetchPosts();
-    }, [currentUser._id, deleted, postChange]);
+    }, [ID, deleted, postChange]);
 
     //* Get the auther of the profile
     useEffect(() => {
@@ -168,24 +168,25 @@ const Profile = () => {
                                 )}
                             </div>
                         </div>
-
-                        {/* Update Button*/}
-                        {auther._id === currentUser._id ? (
-                            <button
-                                onClick={() => {
-                                    setOpenUpdate(true);
-                                }}>
-                                Update
-                            </button>
-                        ) : (
-                            <button onClick={handleFollow}>
-                                {following ? "Following" : "Follow"}
-                            </button>
-                        )}
-                        {/* Output Button*/}
-                        {auther._id === currentUser._id && (
-                            <button onClick={handleLogout}>Logout</button>
-                        )}
+                        <div className="buttons">
+                            {/* Update Button*/}
+                            {auther._id === currentUser._id ? (
+                                <button
+                                    onClick={() => {
+                                        setOpenUpdate(true);
+                                    }}>
+                                    Update
+                                </button>
+                            ) : (
+                                <button onClick={handleFollow}>
+                                    {following ? "Following" : "Follow"}
+                                </button>
+                            )}
+                            {/* Output Button*/}
+                            {auther._id === currentUser._id && (
+                                <button onClick={handleLogout}>Logout</button>
+                            )}
+                        </div>
                     </div>
                     <div className="right">
                         <EmailOutlinedIcon />

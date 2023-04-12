@@ -11,6 +11,7 @@ function Posts({ userId }) {
     const [deleted, setDeleted] = useState(false);
     const [loading, setLoading] = useState(true);
     const { postChange } = useContext(ChangeContext);
+    const { sortBy } = useContext(ChangeContext);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -18,12 +19,27 @@ function Posts({ userId }) {
             const res = await axios.get(
                 "http://localhost:8800/api/posts/timeline/" + userId
             );
-            setPosts(res.data);
+
+            let temp = res.data;
+
+            if (sortBy === "Likes") {
+                // sort by likes in descending order
+                temp.sort((a, b) => b.likes.length - a.likes.length);
+            } else if (sortBy === "Comments") {
+                // sort by number of comments in descending order
+                temp.sort((a, b) => b.comments.length - a.comments.length);
+            } else {
+                // sort by creation time in descending order
+                temp.sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
+            }
+            setPosts(temp);
             setLoading(false);
             setDeleted(false);
         };
         fetchPosts();
-    }, [userId, deleted, postChange]);
+    }, [userId, deleted, postChange, sortBy]);
 
     return (
         <div className="posts">
