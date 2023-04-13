@@ -1,5 +1,5 @@
 import "./Navbar.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -10,14 +10,36 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { ChangeContext } from "../../context/changeContext";
+import axios from "axios";
 
 function Navbar() {
+    const [searchTerm, setSearchTerm] = useState("");
+    const [errTerm, setErrTerm] = useState("");
     const { toggle, darkMode } = useContext(DarkModeContext);
     const { grid, setGrid } = useContext(ChangeContext);
     const { currentUser } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        try {
+            setErrTerm("");
+            const res = await axios.get(
+                "http://localhost:8800/api/users/getbyname/" + searchTerm
+            );
+            const userId = res.data._id;
+
+            setSearchTerm("");
+
+            navigate("/profile/" + userId);
+        } catch (err) {
+            setErrTerm("No Such User");
+        }
+    };
 
     return (
         <div className="navbar">
@@ -37,9 +59,15 @@ function Navbar() {
                     <GridViewOutlinedIcon onClick={() => setGrid(!grid)} />
                 )}
                 <div className="search">
-                    <SearchOutlinedIcon />
-                    <input type="text" placeholder="Search" />
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <SearchOutlinedIcon onClick={handleSearch} />
                 </div>
+                {errTerm && <span className="error">{errTerm}</span>}
             </div>
 
             <div className="right">

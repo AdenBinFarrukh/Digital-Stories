@@ -7,6 +7,7 @@ import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import Comments from "../comments/Comments";
 
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { AuthContext } from "../../context/authContext";
@@ -15,12 +16,16 @@ import axios from "axios";
 
 function Post({ post, setDeleted }) {
     const { postChange, setPostChange, grid } = useContext(ChangeContext);
-    const [commentOpen, setCommentOpen] = useState(grid || false);
+    const [commentOpen, setCommentOpen] = useState(grid);
     const [menuOpen, setMenuOpen] = useState(false);
     const [author, setAuthor] = useState({});
     const { currentUser } = useContext(AuthContext);
 
     const [liked, setliked] = useState(post.likes.includes(currentUser._id));
+
+    useEffect(() => {
+        setCommentOpen(grid);
+    }, [grid]);
 
     //* Get the author of post
     useEffect(() => {
@@ -107,7 +112,7 @@ function Post({ post, setDeleted }) {
                 <div className="user">
                     <div className="userInfo">
                         {author.profilePicture ? (
-                            <img
+                            <LazyLoadImage
                                 src={
                                     process.env.REACT_APP_Image_Path +
                                     author.profilePicture
@@ -115,7 +120,7 @@ function Post({ post, setDeleted }) {
                                 alt=""
                             />
                         ) : (
-                            <img
+                            <LazyLoadImage
                                 src={
                                     process.env.REACT_APP_Image_Path +
                                     "No_Image.jpg"
@@ -159,7 +164,7 @@ function Post({ post, setDeleted }) {
                 <div className="content">
                     <p>{post.desc}</p>
                     {post.image && (
-                        <img
+                        <LazyLoadImage
                             src={process.env.REACT_APP_Image_Path + post.image}
                             alt=""
                         />

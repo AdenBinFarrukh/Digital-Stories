@@ -29,7 +29,7 @@ const Profile = () => {
     const [posts, setPosts] = useState([]);
     const [deleted, setDeleted] = useState(false);
     const [loading, setLoading] = useState(true);
-    const { postChange, grid } = useContext(ChangeContext);
+    const { postChange, grid, sortBy } = useContext(ChangeContext);
 
     //*Get Profile posts
     useEffect(() => {
@@ -38,12 +38,26 @@ const Profile = () => {
             const res = await axios.get(
                 "http://localhost:8800/api/posts/profile/" + ID
             );
-            setPosts(res.data);
+            let temp = res.data;
+
+            if (sortBy === "Likes") {
+                // sort by likes in descending order
+                temp.sort((a, b) => b.likes.length - a.likes.length);
+            } else if (sortBy === "Comments") {
+                // sort by number of comments in descending order
+                temp.sort((a, b) => b.comments.length - a.comments.length);
+            } else {
+                // sort by creation time in descending order
+                temp.sort(
+                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                );
+            }
+            setPosts(temp);
             setLoading(false);
             setDeleted(false);
         };
         fetchPosts();
-    }, [ID, deleted, postChange]);
+    }, [ID, deleted, postChange, sortBy]);
 
     //* Get the auther of the profile
     useEffect(() => {
@@ -86,6 +100,7 @@ const Profile = () => {
                     logged_in: false,
                 }
             );
+            localStorage.removeItem("user");
 
             navigate("/login");
         } catch (err) {

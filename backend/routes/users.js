@@ -52,6 +52,22 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+//* Get user by name
+router.get("/getbyname/:username", async (req, res) => {
+    try {
+        console.log(
+            "🚀 ~ file: users.js:66 ~ router.get ~ username:",
+            req.params.username
+        );
+
+        const user = await User.findOne({ username: req.params.username });
+        const { password, updatedAt, ...other } = user._doc;
+        res.status(200).json(other);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
 //* follow a user
 
 router.put("/:id/follow", async (req, res) => {
