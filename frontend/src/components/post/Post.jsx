@@ -14,11 +14,11 @@ import { ChangeContext } from "../../context/changeContext";
 import axios from "axios";
 
 function Post({ post, setDeleted }) {
-    const [commentOpen, setCommentOpen] = useState(false);
+    const { postChange, setPostChange, grid } = useContext(ChangeContext);
+    const [commentOpen, setCommentOpen] = useState(grid || false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [author, setAuthor] = useState({});
     const { currentUser } = useContext(AuthContext);
-    const { postChange, setPostChange } = useContext(ChangeContext);
 
     const [liked, setliked] = useState(post.likes.includes(currentUser._id));
 
@@ -178,7 +178,11 @@ function Post({ post, setDeleted }) {
 
                     <div
                         className="items"
-                        onClick={() => setCommentOpen(!commentOpen)}>
+                        onClick={() => {
+                            if (!grid) {
+                                setCommentOpen(!commentOpen);
+                            }
+                        }}>
                         <CommentOutlinedIcon />
                         {post.comments.length}
                     </div>

@@ -29,7 +29,7 @@ const Profile = () => {
     const [posts, setPosts] = useState([]);
     const [deleted, setDeleted] = useState(false);
     const [loading, setLoading] = useState(true);
-    const { postChange } = useContext(ChangeContext);
+    const { postChange, grid } = useContext(ChangeContext);
 
     //*Get Profile posts
     useEffect(() => {
@@ -195,7 +195,7 @@ const Profile = () => {
                 </div>
                 {/* <Posts userId={ID}/> */}
 
-                <div className="posts">
+                <div className={grid ? "posts_grid" : "posts"}>
                     {loading ? (
                         <ReactLoading
                             type={"spin"}

@@ -11,7 +11,7 @@ function Posts({ userId }) {
     const [deleted, setDeleted] = useState(false);
     const [loading, setLoading] = useState(true);
     const { postChange } = useContext(ChangeContext);
-    const { sortBy } = useContext(ChangeContext);
+    const { sortBy, grid } = useContext(ChangeContext);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -42,7 +42,7 @@ function Posts({ userId }) {
     }, [userId, deleted, postChange, sortBy]);
 
     return (
-        <div className="posts">
+        <div className={grid ? "posts_grid" : "posts"}>
             {loading ? (
                 <ReactLoading
                     type={"spin"}

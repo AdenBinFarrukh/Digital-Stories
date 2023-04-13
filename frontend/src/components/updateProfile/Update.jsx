@@ -1,57 +1,64 @@
 import axios from "axios";
-import { useContext, useState } from "react"
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import "./update.scss"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import "./update.scss";
 
-function Update({setOpenUpdate}) {
-    const [profile, setProfile] = useState(null)
-    const [cover, setCover] = useState(null)
+function Update({ setOpenUpdate }) {
+    const [profile, setProfile] = useState(null);
+    const [cover, setCover] = useState(null);
     const { currentUser, setCurrentUser } = useContext(AuthContext);
-    const [data, setData] = useState(
-        {
-            userId : currentUser._id,
-            username : currentUser.username,
-            from : currentUser.from,
-            email : currentUser.email,
-        }
-    )
+    const [data, setData] = useState({
+        userId: currentUser._id,
+        username: currentUser.username,
+        from: currentUser.from,
+        email: currentUser.email,
+    });
 
-    const handleChange = e => {
-        setData(prev => ({...prev, [e.target.name] : e.target.value}))
-    }
+    const handleChange = (e) => {
+        setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
 
-  
     const handleClick = async (e) => {
         e.preventDefault();
         try {
             if (cover) {
-                console.log(cover)
+                console.log(cover);
                 const formData = new FormData();
                 formData.append("file", cover);
-                const res = await axios.post("http://localhost:8800/api/upload", formData);
+                const res = await axios.post(
+                    "http://localhost:8800/api/upload",
+                    formData
+                );
                 data.coverPicture = res.data.filename;
             }
             if (profile) {
-                console.log(profile)
+                console.log(profile);
                 const formData = new FormData();
                 formData.append("file", profile);
-                const res = await axios.post("http://localhost:8800/api/upload", formData);
+                const res = await axios.post(
+                    "http://localhost:8800/api/upload",
+                    formData
+                );
                 data.profilePicture = res.data.filename;
             }
-            console.log(data)
-            const res = await axios.put("http://localhost:8800/api/users/" + currentUser._id, data);
+            console.log(data);
+            const res = await axios.put(
+                "http://localhost:8800/api/users/" + currentUser._id,
+                data
+            );
             console.log(res.data);
             setProfile(null);
             setCover(null);
 
-            const newData = await axios.get("http://localhost:8800/api/users/" + currentUser._id)
-            setCurrentUser(newData.data)
+            const newData = await axios.get(
+                "http://localhost:8800/api/users/" + currentUser._id
+            );
+            setCurrentUser(newData.data);
         } catch (err) {
             console.log(err);
         }
-    }
-
+    };
 
     return (
         <div className="update">
@@ -60,17 +67,14 @@ function Update({setOpenUpdate}) {
                 <form>
                     <div className="files">
                         <label htmlFor="cover">
-                        <span>Cover Picture</span>
-                        <div className="imgContainer">
-                            <img
-                                src={
-                                    cover
-                                    && URL.createObjectURL(cover)
-                                }
-                                alt=""
-                            />
-                            <CloudUploadIcon className="icon" />
-                        </div>
+                            <span>Cover Picture</span>
+                            <div className="imgContainer">
+                                <img
+                                    src={cover && URL.createObjectURL(cover)}
+                                    alt=""
+                                />
+                                <CloudUploadIcon className="icon" />
+                            </div>
                         </label>
                         <input
                             type="file"
@@ -82,11 +86,10 @@ function Update({setOpenUpdate}) {
                             <span>Profile Picture</span>
                             <div className="imgContainer">
                                 <img
-                                src={
-                                    profile
-                                    && URL.createObjectURL(profile)
-                                }
-                                alt=""
+                                    src={
+                                        profile && URL.createObjectURL(profile)
+                                    }
+                                    alt=""
                                 />
                                 <CloudUploadIcon className="icon" />
                             </div>
@@ -122,23 +125,11 @@ function Update({setOpenUpdate}) {
                     <button onClick={handleClick}>Update</button>
                 </form>
                 <button className="close" onClick={() => setOpenUpdate(false)}>
-                close
+                    close
                 </button>
             </div>
         </div>
-        // <div className="update">
-        //     Update
-        //     <form>
-        //         <input type="file" onChange={(e) => setProfile(e.target.files[0])}/>
-        //         <input type="file" onChange={(e) => setCover(e.target.files[0])}/>
-        //         <input type="text" name="name" value={data.username} onChange={handleChange}/>
-        //         <input type="text" name="from" value={data.from} onChange={handleChange}/>
-        //         <input type="text" name="email" value={data.email} onChange={handleChange} />
-        //         <button onClick={handleClick}>Update</button>
-        //     </form>
-        //     <button onClick={()=>{setOpenUpdate(false)}}>Done</button>
-        // </div>
-    )
+    );
 }
 
-export default Update
+export default Update;
