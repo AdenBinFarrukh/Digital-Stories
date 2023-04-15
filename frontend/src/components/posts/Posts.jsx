@@ -19,20 +19,24 @@ function Posts({ userId }) {
             const res = await axios.get(
                 "http://localhost:8800/api/posts/timeline/" + userId
             );
-
+            console.log(res);
             let temp = res.data;
 
-            if (sortBy === "Likes") {
-                // sort by likes in descending order
-                temp.sort((a, b) => b.likes.length - a.likes.length);
-            } else if (sortBy === "Comments") {
-                // sort by number of comments in descending order
-                temp.sort((a, b) => b.comments.length - a.comments.length);
-            } else {
-                // sort by creation time in descending order
-                temp.sort(
-                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-                );
+            try {
+                if (sortBy === "Likes") {
+                    // sort by likes in descending order
+                    temp.sort((a, b) => b.likes.length - a.likes.length);
+                } else if (sortBy === "Comments") {
+                    // sort by number of comments in descending order
+                    temp.sort((a, b) => b.comments.length - a.comments.length);
+                } else if (sortBy === "createdAt") {
+                    // sort by creation time in descending order
+                    temp.sort(
+                        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                    );
+                }
+            } catch (err) {
+                console.log("🚀 ~ file: Posts.jsx:42 ~ fetchPosts ~ err:", err);
             }
             setPosts(temp);
             setLoading(false);
