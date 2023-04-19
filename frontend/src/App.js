@@ -63,6 +63,7 @@ function App() {
                         <Route path="/leaderboard" element={<Leaderboard />} />
                         <Route path="/engagements" element={<Engagements />} />
                         <Route path="/profile/:id" element={<Profile />} />
+                        <Route path="*" element={<Navigate to="/" replace />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

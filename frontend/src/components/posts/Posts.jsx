@@ -19,7 +19,6 @@ function Posts({ userId }) {
             const res = await axios.get(
                 "http://localhost:8800/api/posts/timeline/" + userId
             );
-            console.log(res);
             let temp = res.data;
 
             try {
