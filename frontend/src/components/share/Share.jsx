@@ -28,16 +28,10 @@ const Share = () => {
             if (file) {
                 const formData = new FormData();
                 formData.append("file", file);
-                const res = await axios.post(
-                    "http://localhost:8800/api/upload",
-                    formData
-                );
+                const res = await axios.post("/api/upload", formData);
                 postData.image = res.data.filename;
             }
-            const res = await axios.post(
-                "http://localhost:8800/api/posts/",
-                postData
-            );
+            const res = await axios.post("/api/posts/", postData);
             setDesc("");
             setFile(null);
             setPostChange(!postChange);

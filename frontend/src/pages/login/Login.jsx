@@ -27,13 +27,10 @@ const Login = () => {
         try {
             await login(inputs);
 
-            await axios.put(
-                "http://localhost:8800/api/users/" + currentUser._id,
-                {
-                    userId: currentUser._id,
-                    logged_in: true,
-                }
-            );
+            await axios.put("/api/users/" + currentUser._id, {
+                userId: currentUser._id,
+                logged_in: true,
+            });
 
             navigate("/");
         } catch (err) {

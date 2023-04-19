@@ -26,34 +26,23 @@ function Update({ setOpenUpdate }) {
                 console.log(cover);
                 const formData = new FormData();
                 formData.append("file", cover);
-                const res = await axios.post(
-                    "http://localhost:8800/api/upload",
-                    formData
-                );
+                const res = await axios.post("/api/upload", formData);
                 data.coverPicture = res.data.filename;
             }
             if (profile) {
                 console.log(profile);
                 const formData = new FormData();
                 formData.append("file", profile);
-                const res = await axios.post(
-                    "http://localhost:8800/api/upload",
-                    formData
-                );
+                const res = await axios.post("/api/upload", formData);
                 data.profilePicture = res.data.filename;
             }
             console.log(data);
-            const res = await axios.put(
-                "http://localhost:8800/api/users/" + currentUser._id,
-                data
-            );
+            const res = await axios.put("/api/users/" + currentUser._id, data);
             console.log(res.data);
             setProfile(null);
             setCover(null);
 
-            const newData = await axios.get(
-                "http://localhost:8800/api/users/" + currentUser._id
-            );
+            const newData = await axios.get("/api/users/" + currentUser._id);
             setCurrentUser(newData.data);
         } catch (err) {
             console.log(err);

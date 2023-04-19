@@ -14,9 +14,7 @@ function Comment({ comment, postId }) {
     //* Get User Info
     useEffect(() => {
         const getUser = async () => {
-            const res = await axios.get(
-                "http://localhost:8800/api/users/" + comment.author
-            );
+            const res = await axios.get("/api/users/" + comment.author);
             setUser(res.data);
             setIsLoading(false);
         };
@@ -25,12 +23,7 @@ function Comment({ comment, postId }) {
 
     //! delete comment
     const deleteComment = async () => {
-        await axios.delete(
-            "http://localhost:8800/api/posts/" +
-                postId +
-                "/comments/" +
-                comment._id
-        );
+        await axios.delete("/api/posts/" + postId + "/comments/" + comment._id);
         setCommentChange(!commentChange);
     };
 

@@ -11,9 +11,7 @@ const Leaderboard = () => {
     useEffect(() => {
         const getLeaders = async () => {
             setLoading(true);
-            const res = await axios.get(
-                "http://localhost:8800/api/users/List/leaders"
-            );
+            const res = await axios.get("/api/users/List/leaders");
 
             setLoading(false);
             setLeaders(res.data);

@@ -35,9 +35,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
-            const res = await axios.get(
-                "http://localhost:8800/api/posts/profile/" + ID
-            );
+            const res = await axios.get("/api/posts/profile/" + ID);
             let temp = res.data;
 
             if (sortBy === "Likes") {
@@ -62,9 +60,7 @@ const Profile = () => {
     //* Get the auther of the profile
     useEffect(() => {
         const fetchPosts = async () => {
-            const res = await axios.get(
-                "http://localhost:8800/api/users/" + ID
-            );
+            const res = await axios.get("/api/users/" + ID);
             setAuther(res.data);
         };
         fetchPosts();
@@ -74,14 +70,11 @@ const Profile = () => {
     const handleFollow = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(
-                "http://localhost:8800/api/users/" + ID + "/follow",
-                { userId: currentUser._id }
-            );
+            await axios.put("/api/users/" + ID + "/follow", {
+                userId: currentUser._id,
+            });
             setFollowing(!following);
-            const res = await axios.get(
-                "http://localhost:8800/api/users/" + currentUser._id
-            );
+            const res = await axios.get("/api/users/" + currentUser._id);
             setCurrentUser(res.data);
         } catch (err) {
             console.log(err);
@@ -93,13 +86,10 @@ const Profile = () => {
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(
-                "http://localhost:8800/api/users/" + currentUser._id,
-                {
-                    userId: currentUser._id,
-                    logged_in: false,
-                }
-            );
+            await axios.put("/api/users/" + currentUser._id, {
+                userId: currentUser._id,
+                logged_in: false,
+            });
             localStorage.removeItem("user");
 
             navigate("/login");

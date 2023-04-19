@@ -46,7 +46,7 @@ function Comments({ postId }) {
     useEffect(() => {
         const fetchComments = async () => {
             const res = await axios.get(
-                "http://localhost:8800/api/posts/" + postId + "/getcomments"
+                "/api/posts/" + postId + "/getcomments"
             );
             setIsLoading(false);
             setComments(res.data.comments);

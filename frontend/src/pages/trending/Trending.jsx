@@ -15,9 +15,7 @@ const Trending = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
-            const res = await axios.get(
-                "http://localhost:8800/api/posts/List/Trending"
-            );
+            const res = await axios.get("/api/posts/List/Trending");
             setPosts(res.data);
             setLoading(false);
             setDeleted(false);
