@@ -1,48 +1,65 @@
 import { useContext } from "react";
-import "./Stories.scss"
-import { AuthContext } from "../../context/authContext"
+import "./Stories.scss";
+import { AuthContext } from "../../context/authContext";
+import story1 from "../../assets/story1.jpg";
+import story2 from "../../assets/story2.jpg";
+import story3 from "../../assets/story3.jpg";
+import story4 from "../../assets/story4.jpg";
 
 function Stories() {
-    const {currentUser} = useContext(AuthContext)
+    const { currentUser } = useContext(AuthContext);
 
     const stories = [
         {
             id: 1,
             name: "John Doe",
-            img: "https://cdn.pixabay.com/photo/2023/02/01/10/37/sunset-7760143_960_720.jpg",
+            img: story1,
         },
         {
             id: 2,
             name: "John Doe",
-            img: "https://cdn.pixabay.com/photo/2013/10/02/23/03/mountains-190055_960_720.jpg",
+            img: story2,
         },
         {
             id: 3,
             name: "John Doe",
-            img: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_960_720.jpg",
+            img: story3,
         },
         {
             id: 4,
             name: "John Doe",
-            img: "https://cdn.pixabay.com/photo/2013/11/28/10/36/road-220058_960_720.jpg",
+            img: story4,
         },
     ];
-  
+
     return (
-    <div className='stories'>
-        <div className="story">
-            { currentUser.coverPicture ? <img src={process.env.REACT_APP_Image_Path + currentUser.coverPicture} alt="" /> : <img src={process.env.REACT_APP_Image_Path + "No_Image.jpg"} alt="" /> }
-            <span>{currentUser.username}</span>
-            <button>+</button>
-        </div>
-        {stories.map(story =>(
-            <div className="story" key={story.id} >
-                <img src={story.img} alt="" />
-                <span>{story.name}</span>
+        <div className="stories">
+            <div className="story">
+                {currentUser.coverPicture ? (
+                    <img
+                        src={
+                            process.env.REACT_APP_Image_Path +
+                            currentUser.coverPicture
+                        }
+                        alt=""
+                    />
+                ) : (
+                    <img
+                        src={process.env.REACT_APP_Image_Path + "No_Image.jpg"}
+                        alt=""
+                    />
+                )}
+                <span>{currentUser.username}</span>
+                <button>+</button>
             </div>
-        ))}
-    </div>
-  )
+            {stories.map((story) => (
+                <div className="story" key={story.id}>
+                    <img src={story.img} alt="" />
+                    <span>{story.name}</span>
+                </div>
+            ))}
+        </div>
+    );
 }
 
-export default Stories
+export default Stories;

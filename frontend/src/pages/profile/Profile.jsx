@@ -122,7 +122,7 @@ const Profile = () => {
                     />
                 ) : (
                     <img
-                        src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        src={process.env.REACT_APP_Image_Path + "No_Cover.jpeg"}
                         alt=""
                         className="cover"
                     />
@@ -138,7 +138,7 @@ const Profile = () => {
                     />
                 ) : (
                     <img
-                        src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
+                        src={process.env.REACT_APP_Image_Path + "No_Image.jpg"}
                         alt=""
                         className="profilePic"
                     />

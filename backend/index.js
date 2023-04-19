@@ -12,20 +12,6 @@ const multer = require("multer");
 const path = require("path");
 
 const _dirname = path.dirname("");
-const buildPath = path.join(_dirname, "../frontend/build");
-
-app.use(express.static(buildPath));
-
-app.get("/client/*", function (req, res) {
-    res.sendFile(
-        path.join(__dirname, "../frontend/build/index.html"),
-        function (err) {
-            if (err) {
-                res.status(500).send(err);
-            }
-        }
-    );
-});
 
 dotenv.config();
 
@@ -83,6 +69,20 @@ app.use("/Images", express.static(path.join(__dirname, "Public/Images")));
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
+
+//* Connect to front end
+const buildPath = path.join(_dirname, "../frontend/build");
+app.use(express.static(buildPath));
+app.get("/*", function (req, res) {
+    res.sendFile(
+        path.join(__dirname, "../frontend/build/index.html"),
+        function (err) {
+            if (err) {
+                res.status(500).send(err);
+            }
+        }
+    );
+});
 
 app.listen(8800, () => {
     console.log("Backend server is running!");
