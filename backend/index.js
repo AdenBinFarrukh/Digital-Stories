@@ -7,7 +7,7 @@ const morgan = require("morgan");
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
-// const cors = require("cors");
+const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 
@@ -27,7 +27,7 @@ mongoose.connect(
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
-// app.use(cors());
+app.use(cors());
 
 //* Store Image
 const storage = multer.diskStorage({
