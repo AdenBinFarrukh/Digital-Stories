@@ -28,10 +28,7 @@ function Comments({ postId }) {
         e.preventDefault();
 
         try {
-            await axios.put(
-                "http://localhost:8800/api/posts/" + postId + "/comment",
-                addcomment
-            );
+            await axios.put("/api/posts/" + postId + "/comment", addcomment);
             setCommentChange(!commentChange);
         } catch (err) {
             console.log(err.response.data.message);
