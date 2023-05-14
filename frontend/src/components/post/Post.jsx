@@ -30,7 +30,9 @@ function Post({ post, setDeleted }) {
     //* Get the author of post
     useEffect(() => {
         const fetchAuthor = async () => {
-            const res = await axios.get("/api/users/" + post.userId);
+            const res = await axios.get(
+                process.env.REACT_APP_BE_Link + "/api/users/" + post.userId
+            );
             setAuthor(res.data);
         };
         fetchAuthor();
@@ -38,9 +40,12 @@ function Post({ post, setDeleted }) {
 
     //* Like a post
     const LikePost = async () => {
-        await axios.put("/api/posts/" + post._id + "/like", {
-            userId: currentUser._id,
-        });
+        await axios.put(
+            process.env.REACT_APP_BE_Link + "/api/posts/" + post._id + "/like",
+            {
+                userId: currentUser._id,
+            }
+        );
 
         if (liked) {
             post.likes = post.likes.filter(
@@ -54,7 +59,13 @@ function Post({ post, setDeleted }) {
 
     //* Delete a post
     const handleDelete = async () => {
-        await axios.delete("/api/posts/" + post._id + "/" + currentUser._id);
+        await axios.delete(
+            process.env.REACT_APP_BE_Link +
+                "/api/posts/" +
+                post._id +
+                "/" +
+                currentUser._id
+        );
         setDeleted(true);
     };
 
@@ -62,10 +73,13 @@ function Post({ post, setDeleted }) {
     const handlePublic = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`/api/posts/${post._id}`, {
-                userId: currentUser._id,
-                is_public: !post.is_public, // add the is_public field to the request body
-            });
+            await axios.put(
+                process.env.REACT_APP_BE_Link + `/api/posts/${post._id}`,
+                {
+                    userId: currentUser._id,
+                    is_public: !post.is_public, // add the is_public field to the request body
+                }
+            );
             setPostChange(!postChange);
         } catch (err) {
             console.log("🚀 ~ file: Post.jsx:76 ~ handleSubmit ~ err:", err);

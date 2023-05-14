@@ -18,7 +18,9 @@ function Engagements() {
         const fetchPosts = async () => {
             setLoading(true);
             const res = await axios.get(
-                "/api/posts/engagements/" + currentUser._id
+                process.env.REACT_APP_BE_Link +
+                    "/api/posts/engagements/" +
+                    currentUser._id
             );
             setPosts(res.data);
             setLoading(false);

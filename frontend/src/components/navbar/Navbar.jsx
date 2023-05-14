@@ -28,7 +28,11 @@ function Navbar() {
         e.preventDefault();
         try {
             setErrTerm("");
-            const res = await axios.get("/api/users/getbyname/" + searchTerm);
+            const res = await axios.get(
+                process.env.REACT_APP_BE_Link +
+                    "/api/users/getbyname/" +
+                    searchTerm
+            );
             const userId = res.data._id;
 
             setSearchTerm("");

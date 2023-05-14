@@ -14,7 +14,9 @@ function Comment({ comment, postId }) {
     //* Get User Info
     useEffect(() => {
         const getUser = async () => {
-            const res = await axios.get("/api/users/" + comment.author);
+            const res = await axios.get(
+                process.env.REACT_APP_BE_Link + "/api/users/" + comment.author
+            );
             setUser(res.data);
             setIsLoading(false);
         };
@@ -23,7 +25,13 @@ function Comment({ comment, postId }) {
 
     //! delete comment
     const deleteComment = async () => {
-        await axios.delete("/api/posts/" + postId + "/comments/" + comment._id);
+        await axios.delete(
+            process.env.REACT_APP_BE_Link +
+                "/api/posts/" +
+                postId +
+                "/comments/" +
+                comment._id
+        );
         setCommentChange(!commentChange);
     };
 

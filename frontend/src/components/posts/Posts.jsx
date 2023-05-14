@@ -16,7 +16,9 @@ function Posts({ userId }) {
     useEffect(() => {
         const fetchPosts = async () => {
             setLoading(true);
-            const res = await axios.get("/api/posts/timeline/" + userId);
+            const res = await axios.get(
+                process.env.REACT_APP_BE_Link + "/api/posts/timeline/" + userId
+            );
             let temp = res.data;
 
             try {

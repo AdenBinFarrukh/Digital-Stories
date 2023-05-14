@@ -9,7 +9,10 @@ export const AuthContextProvider = ({ children }) => {
     );
 
     const login = async (inputs) => {
-        const res = await axios.post("/api/auth/login", inputs);
+        const res = await axios.post(
+            process.env.REACT_APP_BE_Link + "/api/auth/login",
+            inputs
+        );
         setCurrentUser(res.data);
     };
 

@@ -27,10 +27,13 @@ const Login = () => {
         try {
             await login(inputs);
 
-            await axios.put("/api/users/" + currentUser._id, {
-                userId: currentUser._id,
-                logged_in: true,
-            });
+            await axios.put(
+                process.env.REACT_APP_BE_Link + "/api/users/" + currentUser._id,
+                {
+                    userId: currentUser._id,
+                    logged_in: true,
+                }
+            );
 
             navigate("/");
         } catch (err) {

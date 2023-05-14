@@ -28,7 +28,13 @@ function Comments({ postId }) {
         e.preventDefault();
 
         try {
-            await axios.put("/api/posts/" + postId + "/comment", addcomment);
+            await axios.put(
+                process.env.REACT_APP_BE_Link +
+                    "/api/posts/" +
+                    postId +
+                    "/comment",
+                addcomment
+            );
             setCommentChange(!commentChange);
         } catch (err) {
             console.log(err.response.data.message);
@@ -43,7 +49,10 @@ function Comments({ postId }) {
     useEffect(() => {
         const fetchComments = async () => {
             const res = await axios.get(
-                "/api/posts/" + postId + "/getcomments"
+                process.env.REACT_APP_BE_Link +
+                    "/api/posts/" +
+                    postId +
+                    "/getcomments"
             );
             setIsLoading(false);
             setComments(res.data.comments);

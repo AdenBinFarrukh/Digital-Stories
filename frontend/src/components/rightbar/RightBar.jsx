@@ -17,7 +17,10 @@ function RightBar() {
     useEffect(() => {
         const connections = async () => {
             const res = await axios.get(
-                "/api/users/" + currentUser._id + "/friends"
+                process.env.REACT_APP_BE_Link +
+                    "/api/users/" +
+                    currentUser._id +
+                    "/friends"
             );
             setConnList(res.data);
         };
